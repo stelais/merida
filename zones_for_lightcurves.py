@@ -2,11 +2,9 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from bokeh.io import curdoc
 from bokeh import events
 from bokeh.layouts import column, row
-from bokeh.models import ColumnDataSource, Slider, TextInput, CustomJS, Whisker, BoxAnnotation, LegendItem, Legend, \
-    Title, Div
+from bokeh.models import ColumnDataSource, Slider, TextInput, CustomJS, Whisker, BoxAnnotation, Div
 from bokeh.plotting import figure
 
 
@@ -296,87 +294,6 @@ def plotter_highlights(plot_, starting_and_ending_, color=1.0):
     return plot_
 
 
-def plotter_zone(the_lightcurve_):
-    """
-    CURRENTLY NOT USED - It was used in the beginning but it is now incorporated on
-    general_zones for call back purposes [double tapping defining the x range].
-
-    This function plots the lightcurve in the main zones for further analysis
-    :param the_lightcurve_:
-    :return:
-    """
-    # Set up plots and widgets(inputs)
-    main_plot, main_widgets_inputs = plotter(the_lightcurve_)
-    secondary_plot, secondary_widgets_inputs = plotter_with_errorbars(the_lightcurve_, main_plot)
-    zone_layout_ = row(column(main_plot, main_widgets_inputs), column(secondary_plot, secondary_widgets_inputs),
-                       width=1200)
-    return zone_layout_
-
-
-def plotter_big_zone(the_lightcurve_):
-    """
-    TEST AREA - not the function to be used in the final server.
-
-    This is a function that plots the lightcurve in the main big zone.
-    Here you can set the x and y range of the plot by double tapping on the plot.
-    The double tap you selected is also shown in a display on the right side of the plot.
-    :param the_lightcurve_:
-    :return:
-    """
-    # Set up plots and widgets(inputs)
-    big_plot, big_widgets_inputs = plotter(the_lightcurve_, height_and_width_=(500, 1200))
-
-    def display_event(div, attributes=[], style='float:left;clear:left;font_size=13px'):
-        # Build a suitable CustomJS to display the current event in the div model.
-        return CustomJS(args=dict(div=div), code="""
-            const attrs = %s;
-            const args = [];
-            for (let i = 0; i<attrs.length; i++) {
-                args.push(attrs[i] + '=' + Number(cb_obj[attrs[i]]).toFixed(2));
-            }
-            const line = "<span style=%r><b>" + cb_obj.event_name + "</b>(" + args.join(", ") + ")</span>\\n";
-            const text = div.text.concat(line);
-            const lines = text.split("\\n")
-            if (lines.length > 35)
-                lines.shift();
-            div.text = lines.join("\\n");
-        """ % (attributes, style))
-
-    div = Div(width=400, height=big_plot.height, height_policy="fixed")
-    big_plot.js_on_event(events.DoubleTap, display_event(div, attributes=['x', 'y', 'sx', 'sy']))
-
-    # Define a callback function to handle the DoubleTap event
-    double_tap_callback = CustomJS(args=dict(which_plot=big_plot), code="""
-            // Get the current data range of the x-axis and y axis
-            let x_range = which_plot.x_range;
-            let y_range = which_plot.y_range;
-
-            // Get the x-coordinate of the double-tap event
-            let tap_x = cb_obj.x;
-            let tap_y = cb_obj.y;
-
-            // Calculate the new x-axis range
-            let new_start_x = Math.max(0, tap_x - 100);
-            let new_end_x = tap_x + 100;
-
-            // Calculate the new y-axis range
-            let new_start_y = tap_y - 10000;
-            let new_end_y = tap_y + 10000;
-
-            // Update the x-axis range
-            x_range.setv({start: new_start_x, end: new_end_x});
-
-            // Update the y-axis range
-            y_range.setv({start: new_start_y, end: new_end_y});
-        """)
-
-    # Attach the DoubleTap event and the callback to the plot
-    big_plot.js_on_event(events.DoubleTap, double_tap_callback)
-
-    zone_layout_ = row(column(big_plot, big_widgets_inputs), div, width=1400)
-    return zone_layout_
-
-
 def general_zones(the_lightcurve_, three_starting_and_ending_days_):
     """
     This function plots all the light curves zones for further analysis.
@@ -513,14 +430,3 @@ def general_zones(the_lightcurve_, three_starting_and_ending_days_):
                                column(secondary_plot_3, secondary_widgets_inputs_3),
                                width=1200)
     return big_zone_layout_, small_zone_layout_1_, small_zone_layout_2_, small_zone_layout_3_
-
-
-# # Uncomment the following lines to test the code
-# # Set light curve name and class
-# lightcurve_name = 'gb10-R-5-6-130249'
-# lightcurve_class = 'positive'
-#
-# # # Add to document
-# zone_layout = plotter_zone(the_lightcurve_)
-# curdoc().add_root(zone_layout)
-# curdoc().title = f"Light curve {lightcurve_name}"

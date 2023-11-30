@@ -7,7 +7,7 @@ from zones_for_lightcurves import LightCurves, general_zones, three_highest_inte
 print('Loading lightcurve data...')
 the_lightcurve = LightCurves(lightcurve_name_='gb10-R-5-6-130249',
                              lightcurve_class_='positive',
-                             data_path_='/Users/sishitan/InterestingMOA/visualizer/example_data/positive/')
+                             data_path_='data/positive')
 # Calculate high magnification intervals
 print('Calculating high magnification intervals...')
 days, fluxes, fluxes_errors = the_lightcurve.get_days_fluxes_errors()
