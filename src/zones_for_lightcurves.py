@@ -1,38 +1,10 @@
 import numpy as np
-import pandas as pd
 from tqdm import tqdm
 
 from bokeh import events
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, Slider, TextInput, CustomJS, Whisker, BoxAnnotation, Div
 from bokeh.plotting import figure
-
-
-class LightCurves:
-    """
-      A class for loading light curves into the bokeh server
-      you need name, class, and path
-      you can adjust other params like the extension if not phot.cor.feather
-    """
-
-    def __init__(self, lightcurve_name_, lightcurve_class_, data_path_):
-        self.lightcurve_name = lightcurve_name_
-        self.lightcurve_extended_name = lightcurve_name_.split('-')[0] + '_' + lightcurve_name_.split('-')[1] + '_' + \
-                                        lightcurve_name_.split('-')[2] + '_' + lightcurve_name_
-        self.lightcurve_class = lightcurve_class_
-        self.main_data_path = data_path_
-        self.extension = '.phot.cor.feather'
-        self.lightcurve_path = self.main_data_path + '/' + self.lightcurve_extended_name \
-                               + self.extension
-        self.lightcurve_dataframe = pd.read_feather(self.lightcurve_path)
-
-    def get_days_fluxes_errors(self):
-        """
-        Get the days, fluxes, and fluxes errors from the lightcurve data frame
-        :return:
-        """
-        return self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'], self.lightcurve_dataframe[
-            'flux_err']
 
 
 def plotter(the_lightcurve_, height_and_width_=(325, 900), high_mag_plotting_=False, starting_and_ending_days_1_=None,
