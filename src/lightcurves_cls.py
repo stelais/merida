@@ -1,34 +1,53 @@
 import pandas as pd
 import requests
+from bs4 import BeautifulSoup
 
 
 class LightCurvesURL:
     """
         A class for loading light curves into the bokeh server using a URL
     """
+
     def __init__(self, lightcurve_name_, lightcurve_class_):
         self.lightcurve_name = lightcurve_name_
         self.lightcurve_class = lightcurve_class_
+        self.lightcurve_extended_name = lightcurve_name_.split('-')[0] + '/' + lightcurve_name_.split('-')[1] + '/' + \
+                                        lightcurve_name_.split('-')[2] + '/' + lightcurve_name_
+        self.extension = '.ipac'
+        self.url_main_path = 'https://exoplanetarchive.ipac.caltech.edu/workspace/TMP_mjAAoX_30027/MOA/tab1/data/'
+        self.lightcurve_url_path = self.url_main_path + self.lightcurve_extended_name + self.extension
+        url = self.lightcurve_url_path
+        column_names = ['HJD', 'flux', 'cor_flux', 'flux_err', 'obsID', 'JD', 'fwhm', 'sky', 'airmass', 'nstar',
+                        'scale',
+                        'exptime', 'skydiff', 'chisq', 'npix', 'airmass1', 'ang1', 'included']
+        colspecs = [(0, 12), (12, 27), (27, 41), (41, 55), (55, 61), (61, 73), (73, 81), (81, 89), (89, 97), (97, 103),
+                    (103, 112),
+                    (112, 120), (120, 130), (130, 141), (141, 146), (146, 154), (154, 163), (163, 172)]
+        self.lightcurve_dataframe = pd.read_fwf(url, header=3, names=column_names, colspecs=colspecs)
 
-    def get_data_from_url(self) -> pd.DataFrame:
+    def get_days_fluxes_errors(self):
         """
-            Loads the events data from NExSci website
-            :return: The data frame of the events.
+        Get the days, fluxes, and fluxes errors from the lightcurve data frame
+        :return:
         """
-        url = 'https://exoplanetarchive.ipac.caltech.edu' + self.lightcurve_name
-        page = requests.get(url)
-        # soup = BeautifulSoup(page.content, 'lxml')
-        # tbl = soup.find("table")
-        # events_data_frame = pd.read_html(str(tbl))[0]
-        # events_data_frame[['field', 'clr', 'chip', 'subfield', 'id']] = events_data_frame['MOA INTERNAL ID'].str.split(
-        #     '-', 4, expand=True)
-        # events_data_frame['chip'] = events_data_frame['chip'].astype(int)
-        # events_data_frame['subfield'] = events_data_frame['subfield'].astype(int)
-        # events_data_frame['id'] = events_data_frame['id'].astype(int)
-        # events_data_frame = events_data_frame.set_index(['field', 'clr', 'chip', 'subfield', 'id'], drop=False)
-        # events_data_frame = events_data_frame.sort_index()
-        # return events_data_frame
-        return None
+        return self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'], self.lightcurve_dataframe[
+            'flux_err']
+
+    def save_lightcurve_from_url_as_csv(self, path_to_save):
+        """
+        Saves the lightcurve as a csv file
+        :param path_to_save:
+        :return:
+        """
+        self.lightcurve_dataframe.to_csv(path_to_save + self.lightcurve_name + '.csv', index=False)
+
+    def save_lightcurve_from_url_as_feather(self, path_to_save):
+        """
+        Saves the lightcurve as a feather file
+        :param path_to_save:
+        :return:
+        """
+        self.lightcurve_dataframe.to_feather(path_to_save + self.lightcurve_name + '.feather')
 
 
 class LightCurvesLocal:
