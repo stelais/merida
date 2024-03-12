@@ -1,6 +1,9 @@
 # merida
 MERIDA: Magnification Exploration and Research Interface for Dataset Analysis
 
+```
+git clone https://github.com/stelais/merida.git
+```
 
 ---
 ### To visualize a light curve from the MOA 9 year dataset:
