@@ -43,6 +43,7 @@ python lightcurve_downloader.py
 
 [Future]
 * Script to download ALL lightcurves from MOA 9 year data set from NEXSci archive.
+* Script to download and read METADATA
 * Identify any data for MOA 9 yeardata set from NEXSci archive based on RA and DEC.
 
 
