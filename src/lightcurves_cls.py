@@ -1,5 +1,5 @@
 import pandas as pd
-
+import numpy as np
 
 class LightCurvesNExSciURL:
     """
@@ -67,22 +67,21 @@ class LightCurvesNExSciLocal:
         self.lightcurve_extended_name = self.field + '/' + self.band + '/' + self.chip + '/' + lightcurve_name_
         self.lightcurve_class = lightcurve_class_
         self.main_data_path = data_path_
-        self.extension = '.phot.cor.feather'
-        self.lightcurve_path = self.main_data_path + '/' + self.lightcurve_extended_name \
-                               + self.extension
-        self.lightcurve_dataframe = pd.read_feather(self.lightcurve_path)
+        self.extension = '.csv'
+        self.lightcurve_path = self.main_data_path + '/' + self.lightcurve_name + self.extension
+        self.lightcurve_dataframe = pd.read_csv(self.lightcurve_path)
 
     def get_days_fluxes_errors(self):
         """
         Get the days, fluxes, and fluxes errors from the lightcurve data frame
         :return:
         """
-        return self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'], self.lightcurve_dataframe[
-            'flux_err']
+        return (self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'],
+                self.lightcurve_dataframe['cor_flux'], self.lightcurve_dataframe['flux_err'])
 
 
 
-class LightCurvesFuguLocal:
+class OldLightCurvesFuguLocal:
     """
       A class for loading light curves into the bokeh server the way it's saved in fugu
       you need name, class, and path
@@ -109,8 +108,10 @@ class LightCurvesFuguLocal:
         Get the days, fluxes, and fluxes errors from the lightcurve data frame
         :return:
         """
-        return self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'], self.lightcurve_dataframe[
-            'flux_err']
+        return (self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'],
+                np.full(shape=len(self.lightcurve_dataframe['HJD']), fill_value=np.nan),
+                self.lightcurve_dataframe['flux_err'])
+
 
 
 class LightCurveMetadata:

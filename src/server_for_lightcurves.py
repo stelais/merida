@@ -2,16 +2,21 @@ from bokeh.layouts import column
 from bokeh.io import curdoc
 
 from src.zones_for_lightcurves import general_zones, three_highest_intervals_finder
-from src.lightcurves_cls import LightCurvesFuguLocal, LightCurvesNExSciURL
+from src.lightcurves_cls import OldLightCurvesFuguLocal, LightCurvesNExSciLocal, LightCurvesNExSciURL
 
 
-def server_caller(lightcurve_name_, lightcurve_class_, local_, data_path_=None):
+def server_caller(lightcurve_name_, lightcurve_class_, local_, data_path_=None, old_data_in_fugu=False):
     # Load lightcurve
     print('Loading lightcurve data...')
     if local_:
-        the_lightcurve = LightCurvesFuguLocal(lightcurve_name_=lightcurve_name_,
-                                              lightcurve_class_=lightcurve_class_,
-                                              data_path_=data_path_)
+        if old_data_in_fugu:
+            the_lightcurve = OldLightCurvesFuguLocal(lightcurve_name_=lightcurve_name_,
+                                                     lightcurve_class_=lightcurve_class_,
+                                                     data_path_=data_path_)
+        else:
+            the_lightcurve = LightCurvesNExSciLocal(lightcurve_name_=lightcurve_name_,
+                                                    lightcurve_class_=lightcurve_class_,
+                                                    data_path_=data_path_)
     else:
         the_lightcurve = LightCurvesNExSciURL(lightcurve_name_=lightcurve_name_,
                                               lightcurve_class_=lightcurve_class_)

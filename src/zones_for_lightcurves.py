@@ -156,9 +156,7 @@ def highest_magnifications_finder(days_, fluxes_, times_standard_deviation_=1.0)
     """
     # Find the regions with the highest magnification points
     fluxes_ = fluxes_ - min(fluxes_)
-    print('fluxes_: ', fluxes_)
     median_plus_std_flux = np.median(fluxes_) + times_standard_deviation_ * np.std(fluxes_)
-    print('median_plus_std_flux: ', median_plus_std_flux)
     days_with_highest_magnification = []
     fluxes_in_highest_magnification_regions = []
     indexes_of_highest_magnification_regions = []
@@ -180,9 +178,6 @@ def highest_magnifications_finder(days_, fluxes_, times_standard_deviation_=1.0)
                 indexes_of_highest_magnification_regions.append(index_for_flux)
         else:
             raise ValueError('Something went wrong with the highest magnification finder')
-    print('days_with_highest_magnification: ', days_with_highest_magnification)
-    print('fluxes_in_highest_magnification_regions: ', fluxes_in_highest_magnification_regions)
-    print('indexes_of_highest_magnification_regions: ', indexes_of_highest_magnification_regions)
     return days_with_highest_magnification, fluxes_in_highest_magnification_regions, indexes_of_highest_magnification_regions
 
 
