@@ -19,7 +19,7 @@ def plotter(the_lightcurve_, height_and_width_=(325, 900), high_mag_plotting_=Fa
     :param starting_and_ending_days_3_: the starting and ending days of the third type of high magnification interval
     :return:
     """
-    days, fluxes, fluxes_errors = the_lightcurve_.get_days_fluxes_errors()
+    days, fluxes, cor_fluxes, fluxes_errors = the_lightcurve_.get_days_fluxes_errors()
     source = ColumnDataSource(data=dict(x=days, y=fluxes))
     # Set up plot
     height_, width_ = height_and_width_
@@ -77,7 +77,7 @@ def plotter_with_errorbars(the_lightcurve_, main_plot_, high_mag_plotting_=False
     :param starting_and_ending_days_3_: the starting and ending days of the third type of high magnification interval
     :return:
     """
-    days, fluxes, fluxes_errors = the_lightcurve_.get_days_fluxes_errors()
+    days, fluxes, cor_fluxes, fluxes_errors = the_lightcurve_.get_days_fluxes_errors()
     upper = [x + e for x, e in zip(fluxes, fluxes_errors)]
     lower = [x - e for x, e in zip(fluxes, fluxes_errors)]
 
@@ -156,14 +156,15 @@ def highest_magnifications_finder(days_, fluxes_, times_standard_deviation_=1.0)
     """
     # Find the regions with the highest magnification points
     fluxes_ = fluxes_ - min(fluxes_)
+    print('fluxes_: ', fluxes_)
     median_plus_std_flux = np.median(fluxes_) + times_standard_deviation_ * np.std(fluxes_)
+    print('median_plus_std_flux: ', median_plus_std_flux)
     days_with_highest_magnification = []
     fluxes_in_highest_magnification_regions = []
     indexes_of_highest_magnification_regions = []
     for index_for_flux in tqdm(range(len(fluxes_) - 1)):
         if index_for_flux + 1 < (len(fluxes_) - 1):
-            if fluxes_[index_for_flux] + fluxes_[index_for_flux + 1] + fluxes_[
-                index_for_flux + 2] > median_plus_std_flux * 3:
+            if fluxes_[index_for_flux] + fluxes_[index_for_flux + 1] + fluxes_[index_for_flux + 2] > median_plus_std_flux * 3:
                 days_with_highest_magnification.append(days_[index_for_flux])
                 fluxes_in_highest_magnification_regions.append(fluxes_[index_for_flux])
                 indexes_of_highest_magnification_regions.append(index_for_flux)
@@ -179,6 +180,9 @@ def highest_magnifications_finder(days_, fluxes_, times_standard_deviation_=1.0)
                 indexes_of_highest_magnification_regions.append(index_for_flux)
         else:
             raise ValueError('Something went wrong with the highest magnification finder')
+    print('days_with_highest_magnification: ', days_with_highest_magnification)
+    print('fluxes_in_highest_magnification_regions: ', fluxes_in_highest_magnification_regions)
+    print('indexes_of_highest_magnification_regions: ', indexes_of_highest_magnification_regions)
     return days_with_highest_magnification, fluxes_in_highest_magnification_regions, indexes_of_highest_magnification_regions
 
 
@@ -196,22 +200,26 @@ def hightest_interval_finder(days_, fluxes_, times_standard_deviation_=1.0):
                                                                                        times_standard_deviation_)
     starting_and_ending_indexes = []
     starting_and_ending_days = []
-    start_index = index_for_flux[0]
-    end_index = index_for_flux[0]
+    if index_for_flux.__len__() != 0:
+        start_index = index_for_flux[0]
+        end_index = index_for_flux[0]
 
-    for choosing_index in tqdm(range(1, len(index_for_flux))):
+        for choosing_index in tqdm(range(1, len(index_for_flux))):
 
-        if index_for_flux[choosing_index] == end_index + 1:
-            end_index = index_for_flux[choosing_index]
-        else:
-            starting_and_ending_indexes.append((start_index, end_index))
-            starting_and_ending_days.append((days_[start_index], days_[end_index]))
-            start_index = index_for_flux[choosing_index]
-            end_index = index_for_flux[choosing_index]
+            if index_for_flux[choosing_index] == end_index + 1:
+                end_index = index_for_flux[choosing_index]
+            else:
+                starting_and_ending_indexes.append((start_index, end_index))
+                starting_and_ending_days.append((days_[start_index], days_[end_index]))
+                start_index = index_for_flux[choosing_index]
+                end_index = index_for_flux[choosing_index]
 
-    starting_and_ending_indexes.append((start_index, end_index))
-    starting_and_ending_days.append((days_[start_index], days_[end_index]))
-    return starting_and_ending_days, starting_and_ending_indexes
+        starting_and_ending_indexes.append((start_index, end_index))
+        starting_and_ending_days.append((days_[start_index], days_[end_index]))
+        return starting_and_ending_days, starting_and_ending_indexes
+    else:
+        print('No high magnification points found for cut3')
+        return [(np.NaN, np.NaN)], [(np.NaN, np.NaN)]
 
 
 def three_highest_intervals_finder(days_, fluxes_,

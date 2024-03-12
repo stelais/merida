@@ -16,24 +16,23 @@ class LightCurvesNExSciURL:
         self.id = lightcurve_name_.split('-')[4]
         self.lightcurve_extended_name = self.field + '/' + self.band + '/' + self.chip + '/' + lightcurve_name_
         self.extension = '.ipac'
-        self.url_main_path = 'https://exoplanetarchive.ipac.caltech.edu/workspace/TMP_mjAAoX_30027/MOA/tab1/data/'
+        self.url_main_path = 'https://exoplanetarchive.ipac.caltech.edu/workspace/TMP_dk5Wxv_13874/MOA/tab1/data/'
         self.lightcurve_url_path = self.url_main_path + self.lightcurve_extended_name + self.extension
         url = self.lightcurve_url_path
+        print(url)
         column_names = ['HJD', 'flux', 'cor_flux', 'flux_err', 'obsID', 'JD', 'fwhm', 'sky', 'airmass', 'nstar',
                         'scale',
                         'exptime', 'skydiff', 'chisq', 'npix', 'airmass1', 'ang1', 'included']
-        colspecs = [(0, 12), (12, 27), (27, 41), (41, 55), (55, 61), (61, 73), (73, 81), (81, 89), (89, 97), (97, 103),
-                    (103, 112),
-                    (112, 120), (120, 130), (130, 141), (141, 146), (146, 154), (154, 163), (163, 172)]
-        self.lightcurve_dataframe = pd.read_fwf(url, header=3, names=column_names, colspecs=colspecs)
+        self.lightcurve_dataframe = pd.read_csv(url, header=3, names=column_names, delimiter=r"\s+", index_col=False)
+
 
     def get_days_fluxes_errors(self):
         """
         Get the days, fluxes, and fluxes errors from the lightcurve data frame
         :return:
         """
-        return self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'], self.lightcurve_dataframe[
-            'flux_err']
+        return (self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'],
+                self.lightcurve_dataframe['cor_flux'], self.lightcurve_dataframe['flux_err'])
 
     def save_lightcurve_from_url_as_csv(self, path_to_save):
         """
@@ -49,7 +48,7 @@ class LightCurvesNExSciURL:
         :param path_to_save:
         :return:
         """
-        self.lightcurve_dataframe.to_feather(path_to_save + self.lightcurve_name + '.feather')
+        self.lightcurve_dataframe.to_feather(path_to_save + self.lightcurve_name + '.feather', index=False)
 
 class LightCurvesNExSciLocal:
     """
