@@ -1,6 +1,7 @@
 # merida
 MERIDA: Magnification Exploration and Research Interface for Dataset Analysis
 
+
 ---
 ### To visualize a light curve from the MOA 9 year dataset:
 * In `visualization_tool.py`:
@@ -48,8 +49,6 @@ python lightcurve_downloader.py
 [Virtual tool in progress...]
 https://merida.onrender.com/visualization_tool
 * Only the light curve gb10-R-5-6-130249 as an example (it load this data from this Github repository)
+
 * Takes about one minute to load it
-
-
- 
-  
+  `visualization_tool.py`  
