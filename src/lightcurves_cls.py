@@ -113,21 +113,41 @@ class OldLightCurvesFuguLocal:
                 self.lightcurve_dataframe['flux_err'])
 
 
-
-class LightCurveMetadata:
+class Metadata:
     """
-    A class for loading light curves metadata
+    A class for loading the light curves metadata
+    ['field', 'chip', 'subframe', 'id', 'tag', 'x', 'y', 'ra_j2000',
+    'dec_j2000', 'number_of_data_points', 'number_of_frames_object_is_detected',
+    'max_significance', 'sum_of_continuous_significance', 'chi_squared_outside_search_window',
+    'dophot_object_reference_image_separation', 'dophot_id', 'dophot_type', 'dophot_magnitude',
+    'dophot_magnitude_error', 'pspl_t0', 'pspl_tE', 'pspl_u0', 'pspl_source_flux', 'pspl_blending_flux',
+    'pspl_t0_parabolic_error', 'pspl_tE_parabolic_error', 'pspl_tE_error_lower_limit', 'pspl_tE_error_upper_limit',
+    'pspl_u0_parabolic_error', 'pspl_u0_error_lower_limit', 'pspl_u0_error_upper_limit', 'pspl_source_flux_error',
+    'pspl_blending_flux_error', 'pspl_chi_squared', 'fspl_t0', 'fspl_tE', 'fspl_u0', 'fspl_rho', 'fspl_source_flux',
+    'fspl_blending_flux', 'fspl_t0_parabolic_error', 'fspl_tE_parabolic_error', 'fspl_tE_error_lower_limit',
+    'fspl_tE_error_upper_limit', 'fspl_u0_parabolic_error', 'fspl_u0_error_lower_limit', 'fspl_u0_error_upper_limit',
+    'fspl_rho_parabolic_error', 'fspl_rho_error_lower_limit', 'fspl_rho_error_upper_limit', 'fspl_source_flux_error',
+    'fspl_blending_flux_error', 'fspl_chi_squared', 'separation_to_alert_position1', 'alert_id1', 'alert_x1',
+    'alert_y1', 'separation_to_alert_position2', 'alert_id2', 'alert_x2', 'alert_y2', 'ROW_IDX', 'ROW_NUM',
+    'lightcurve_name']
+
+    ['field', 'chip', 'subframe', 'id', 'x', 'y', 'ra_j2000',
+    'dec_j2000', 'number_of_data_points', 'number_of_frames_object_is_detected',
+    'max_significance', 'sum_of_continuous_significance', 'chi_squared_outside_search_window',
+    'dophot_object_reference_image_separation', 'dophot_id', 'dophot_type', 'dophot_magnitude',
+    'dophot_magnitude_error', 'pspl_t0', 'pspl_tE', 'pspl_u0', 'pspl_source_flux', 'pspl_blending_flux',
+    'pspl_t0_parabolic_error', 'pspl_tE_parabolic_error', 'pspl_tE_error_lower_limit', 'pspl_tE_error_upper_limit',
+    'pspl_u0_parabolic_error', 'pspl_u0_error_lower_limit', 'pspl_u0_error_upper_limit', 'pspl_source_flux_error',
+    'pspl_blending_flux_error', 'pspl_chi_squared', 'fspl_t0', 'fspl_tE', 'fspl_u0', 'fspl_rho', 'fspl_source_flux',
+    'fspl_blending_flux', 'fspl_t0_parabolic_error', 'fspl_tE_parabolic_error', 'fspl_tE_error_lower_limit',
+    'fspl_tE_error_upper_limit', 'fspl_u0_parabolic_error', 'fspl_u0_error_lower_limit', 'fspl_u0_error_upper_limit',
+    'fspl_rho_parabolic_error', 'fspl_rho_error_lower_limit', 'fspl_rho_error_upper_limit', 'fspl_source_flux_error',
+    'fspl_blending_flux_error', 'fspl_chi_squared', 'separation_to_alert_position1', 'alert_id1', 'alert_x1',
+    'alert_y1', 'separation_to_alert_position2', 'alert_id2', 'alert_x2', 'alert_y2', 'ROW_IDX', 'ROW_NUM',
+    'lightcurve_name']
+
     """
 
-    def __init__(self, lightcurve_name_, lightcurve_class_):
-        # TODO working here
-        self.lightcurve_name = lightcurve_name_
-        self.field = lightcurve_name_.split('-')[0]
-        self.band = lightcurve_name_.split('-')[1]
-        self.chip = lightcurve_name_.split('-')[2]
-        self.subframe = lightcurve_name_.split('-')[3]
-        self.id = lightcurve_name_.split('-')[4]
-        self.lightcurve_class = lightcurve_class_
-
-        metadata_url = 'https://exoplanetarchive.ipac.caltech.edu/workspace/TMP_mjAAoX_30027/MOA/tab1/data/metadata.ipac'
-
+    def __init__(self):
+        self.path = 'data/metadata.csv'
+        self.dataframe = pd.read_csv(self.path)

@@ -22,6 +22,7 @@ def download_lightcurve(lightcurve_name_, lightcurve_class_, path_to_save_='data
 if __name__ == "__main__":
     # Before: Go to https://exoplanetarchive.ipac.caltech.edu/cgi-bin/MOA/nph-firefly?MOA
     # And find the temporary workspace
+    # Change line 19 on lightcurves_cls.py to the new temporary workspace
 
     # # Example 01:
     lightcurve_name = 'gb1-R-1-1-315'
