@@ -48,9 +48,9 @@ class LightCurvesNExSciURL:
         :param path_to_save:
         :return:
         """
-        self.lightcurve_dataframe.to_feather(path_to_save + self.lightcurve_name + '.feather', index=False)
+        self.lightcurve_dataframe.to_feather(path_to_save + self.lightcurve_name + '.feather')
 
-class LightCurvesNExSciLocal:
+class LightCurvesNExSciLocalCSV:
     """
       A class for loading light curves downloaded from NExSci platform
       you need name, class, and path
@@ -70,6 +70,36 @@ class LightCurvesNExSciLocal:
         self.extension = '.csv'
         self.lightcurve_path = self.main_data_path + '/' + self.lightcurve_name + self.extension
         self.lightcurve_dataframe = pd.read_csv(self.lightcurve_path)
+
+    def get_days_fluxes_errors(self):
+        """
+        Get the days, fluxes, and fluxes errors from the lightcurve data frame
+        :return:
+        """
+        return (self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'],
+                self.lightcurve_dataframe['cor_flux'], self.lightcurve_dataframe['flux_err'])
+
+
+class LightCurvesNExSciLocalFeather:
+    """
+      A class for loading light curves downloaded from NExSci platform
+      you need name, class, and path
+      you can adjust other params like the extension if not phot.cor.feather
+    """
+
+    def __init__(self, lightcurve_name_, lightcurve_class_, data_path_):
+        self.lightcurve_name = lightcurve_name_
+        self.field = lightcurve_name_.split('-')[0]
+        self.band = lightcurve_name_.split('-')[1]
+        self.chip = lightcurve_name_.split('-')[2]
+        self.subframe = lightcurve_name_.split('-')[3]
+        self.id = lightcurve_name_.split('-')[4]
+        self.lightcurve_extended_name = self.field + '/' + self.band + '/' + self.chip + '/' + lightcurve_name_
+        self.lightcurve_class = lightcurve_class_
+        self.main_data_path = data_path_
+        self.extension = '.feather'
+        self.lightcurve_path = self.main_data_path + '/' + self.lightcurve_name + self.extension
+        self.lightcurve_dataframe = pd.read_feather(self.lightcurve_path)
 
     def get_days_fluxes_errors(self):
         """
@@ -112,10 +142,9 @@ class OldLightCurvesFuguLocal:
                 np.full(shape=len(self.lightcurve_dataframe['HJD']), fill_value=np.nan),
                 self.lightcurve_dataframe['flux_err'])
 
-
 class Metadata:
     """
-    A class for loading the light curves metadata
+    A class for loading the light curves metadata (the two pieces)
     ['field', 'chip', 'subframe', 'id', 'tag', 'x', 'y', 'ra_j2000',
     'dec_j2000', 'number_of_data_points', 'number_of_frames_object_is_detected',
     'max_significance', 'sum_of_continuous_significance', 'chi_squared_outside_search_window',
@@ -130,8 +159,24 @@ class Metadata:
     'fspl_blending_flux_error', 'fspl_chi_squared', 'separation_to_alert_position1', 'alert_id1', 'alert_x1',
     'alert_y1', 'separation_to_alert_position2', 'alert_id2', 'alert_x2', 'alert_y2', 'ROW_IDX', 'ROW_NUM',
     'lightcurve_name']
+    """
 
-    ['field', 'chip', 'subframe', 'id', 'x', 'y', 'ra_j2000',
+    def __init__(self):
+        self.path1 = 'data/metadata_1of2.feather'
+        self.path2 = 'data/metadata_2of2.feather'
+        self.dataframe1 = pd.read_feather(self.path1)
+        self.dataframe2 = pd.read_feather(self.path2)
+        self.dataframe = pd.concat([self.dataframe1, self.dataframe2], ignore_index=True)
+
+    def get_one_metadata_csv_file(self):
+        self.dataframe.to_csv('data/metadata_test.csv', index=False)
+
+
+
+class MetadataLocal:
+    """
+    A class for loading the light curves metadata Local an entire piece.
+    ['field', 'chip', 'subframe', 'id', 'tag', 'x', 'y', 'ra_j2000',
     'dec_j2000', 'number_of_data_points', 'number_of_frames_object_is_detected',
     'max_significance', 'sum_of_continuous_significance', 'chi_squared_outside_search_window',
     'dophot_object_reference_image_separation', 'dophot_id', 'dophot_type', 'dophot_magnitude',
@@ -145,9 +190,8 @@ class Metadata:
     'fspl_blending_flux_error', 'fspl_chi_squared', 'separation_to_alert_position1', 'alert_id1', 'alert_x1',
     'alert_y1', 'separation_to_alert_position2', 'alert_id2', 'alert_x2', 'alert_y2', 'ROW_IDX', 'ROW_NUM',
     'lightcurve_name']
-
     """
 
     def __init__(self):
         self.path = 'data/metadata.csv'
-        self.dataframe = pd.read_csv(self.path)
+        self.dataframe = pd.read_csv(self.path, float_precision='round_trip')

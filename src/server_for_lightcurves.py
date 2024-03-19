@@ -2,10 +2,12 @@ from bokeh.layouts import column
 from bokeh.io import curdoc
 
 from src.zones_for_lightcurves import general_zones, three_highest_intervals_finder
-from src.lightcurves_cls import OldLightCurvesFuguLocal, LightCurvesNExSciLocal, LightCurvesNExSciURL
+from src.lightcurves_cls import OldLightCurvesFuguLocal, LightCurvesNExSciLocalCSV, LightCurvesNExSciURL, \
+    LightCurvesNExSciLocalFeather
 
 
-def server_caller(lightcurve_name_, lightcurve_class_, local_, data_path_=None, old_data_in_fugu=False):
+def server_caller(lightcurve_name_, lightcurve_class_, local_, data_path_=None, old_data_in_fugu=False,
+                  extension_='.csv'):
     # Load lightcurve
     print('Loading lightcurve data...')
     if local_:
@@ -14,9 +16,17 @@ def server_caller(lightcurve_name_, lightcurve_class_, local_, data_path_=None, 
                                                      lightcurve_class_=lightcurve_class_,
                                                      data_path_=data_path_)
         else:
-            the_lightcurve = LightCurvesNExSciLocal(lightcurve_name_=lightcurve_name_,
-                                                    lightcurve_class_=lightcurve_class_,
-                                                    data_path_=data_path_)
+            if extension_ == '.csv':
+                the_lightcurve = LightCurvesNExSciLocalCSV(lightcurve_name_=lightcurve_name_,
+                                                            lightcurve_class_=lightcurve_class_,
+                                                            data_path_=data_path_)
+            elif extension_ == '.feather':
+                the_lightcurve = LightCurvesNExSciLocalFeather(lightcurve_name_=lightcurve_name_,
+                                                               lightcurve_class_=lightcurve_class_,
+                                                               data_path_=data_path_)
+            else:
+                raise ValueError('Extension not recognized. \n Only feather and cvs are supported. \n ')
+
     else:
         the_lightcurve = LightCurvesNExSciURL(lightcurve_name_=lightcurve_name_,
                                               lightcurve_class_=lightcurve_class_)
