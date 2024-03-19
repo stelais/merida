@@ -32,23 +32,37 @@ bokeh serve --show visualization_tool.py
     ```
     Unfortunately, this is a temporary link. You will have to open https://exoplanetarchive.ipac.caltech.edu/cgi-bin/MOA/nph-firefly?MOA , click to download a lightcurve and then change this `TMP_dk5Wxv_13874` equivalent to the one you have. 
 * In `lightcurve_downloader.py`:
-  * Change the `lightcurve_name` variable to the name of the light curve you want to visualize.
+  * Change the `lightcurve_name` variable to the name of the light curve you want to download.
   * You can change the path by adding the variable `path_to_save_ ='[the_path_you_want_]/'`
 
 After done that, you just have to run the following command in the terminal:
 ```
 python lightcurve_downloader.py
 ```
+---
+### To locally download ALL lightcurves from the NExSci archive:
+* Change line 19 on `lightcurves_cls` in the LightCurvesNExSciURL class.
+    Note that mine has: 
+    ```
+    self.url_main_path = 'https://exoplanetarchive.ipac.caltech.edu/workspace/TMP_dk5Wxv_13874/MOA/tab1/data/' 
+    ```
+    Unfortunately, this is a temporary link. You will have to open https://exoplanetarchive.ipac.caltech.edu/cgi-bin/MOA/nph-firefly?MOA , click to download a lightcurve and then change this `TMP_dk5Wxv_13874` equivalent to the one you have. 
+* In `all_lightcurves_downloader.py`:
+  * You can change the path by changing the variable `path_to_save_ ='[the_path_you_want_]/'`
+  * You can also change the extension `lightcurve_extension_='.[extension]'`. Only feather and CSV supported for now. 
 
+After done that, you just have to run the following command in the terminal:
+```
+python all_lightcurves_downloader.py
+```
 ---
 [Currently]
 * All lightcurves from MOA 9 year data set from NEXSci archive should work. If it doesn't work, you can let me know.
-
-[Future]
 * Script to download ALL lightcurves from MOA 9 year data set from NEXSci archive.
-* Script to download and read METADATA
+* Script to read METADATA
+* 
+[Future]
 * Identify any data for MOA 9 yeardata set from NEXSci archive based on RA and DEC.
-
 
 [Virtual tool in progress...]
 https://merida.onrender.com/visualization_tool
