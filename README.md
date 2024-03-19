@@ -1,5 +1,5 @@
 # merida
-MERIDA: Magnification Exploration and Research Interface for Dataset Analysis
+MERIDA: MOA9yr Exploration and Research Interface for Dataset Analysis
 
 ```
 git clone https://github.com/stelais/merida.git
@@ -25,7 +25,7 @@ bokeh serve --show visualization_tool.py
 ```
 
 ---
-### To locally download a single lightcurve from the NExSci archive:
+### To locally download a single MOA9yr lightcurve from the NExSci archive:
 * Change line 19 on `lightcurves_cls` in the LightCurvesNExSciURL class.
     Note that mine has: 
     ```
@@ -41,7 +41,7 @@ After done that, you just have to run the following command in the terminal:
 python lightcurve_downloader.py
 ```
 ---
-### To locally download ALL lightcurves from the NExSci archive:
+### To locally download ALL MOA9yr lightcurves from the NExSci archive:
 * Change line 19 on `lightcurves_cls` in the LightCurvesNExSciURL class.
     Note that mine has: 
     ```
@@ -60,8 +60,8 @@ python all_lightcurves_downloader.py
 [Currently]
 * All lightcurves from MOA 9 year data set from NEXSci archive should work. If it doesn't work, you can let me know.
 * Script to download ALL lightcurves from MOA 9 year data set from NEXSci archive.
-* Script to read METADATA
-* 
+* Script to read METADATA.
+
 [Future]
 * Identify any data for MOA 9 yeardata set from NEXSci archive based on RA and DEC.
 
