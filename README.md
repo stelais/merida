@@ -3,6 +3,7 @@ MERIDA: Magnification Exploration and Research Interface for Dataset Analysis
 
 ```
 git clone https://github.com/stelais/merida.git
+pip install -r requirements.txt
 ```
 
 ---
