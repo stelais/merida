@@ -68,7 +68,7 @@ class LightCurvesNExSciLocalCSV:
         self.lightcurve_class = lightcurve_class_
         self.main_data_path = data_path_
         self.extension = '.csv'
-        self.lightcurve_path = self.main_data_path + '/' + self.lightcurve_name + self.extension
+        self.lightcurve_path = self.main_data_path + self.lightcurve_name + self.extension
         self.lightcurve_dataframe = pd.read_csv(self.lightcurve_path)
 
     def get_days_fluxes_errors(self):
@@ -98,7 +98,7 @@ class LightCurvesNExSciLocalFeather:
         self.lightcurve_class = lightcurve_class_
         self.main_data_path = data_path_
         self.extension = '.feather'
-        self.lightcurve_path = self.main_data_path + '/' + self.lightcurve_name + self.extension
+        self.lightcurve_path = self.main_data_path + self.lightcurve_name + self.extension
         self.lightcurve_dataframe = pd.read_feather(self.lightcurve_path)
 
     def get_days_fluxes_errors(self):
@@ -129,7 +129,7 @@ class OldLightCurvesFuguLocal:
         self.lightcurve_class = lightcurve_class_
         self.main_data_path = data_path_
         self.extension = '.phot.cor.feather'
-        self.lightcurve_path = self.main_data_path + '/' + self.lightcurve_extended_name \
+        self.lightcurve_path = self.main_data_path + self.lightcurve_extended_name \
                                + self.extension
         self.lightcurve_dataframe = pd.read_feather(self.lightcurve_path)
 

@@ -16,7 +16,7 @@ data_path ='data/positive'
 
 lightcurve_name = 'gb1-R-1-1-315'
 old_data_in_fugu = False
-data_path = 'data'
+data_path = 'data/'
 
 server_caller(lightcurve_name, lightcurve_class, data_local, data_path, old_data_in_fugu)
 
