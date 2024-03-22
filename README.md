@@ -1,9 +1,14 @@
 # merida
 MERIDA: MOA9yr Exploration and Research Interface for Dataset Analysis
 
+Installing from github (should be most updated available version):
 ```
 git clone https://github.com/stelais/merida.git
 pip install -r requirements.txt
+```
+Installing as a pip package:
+```
+pip install merida
 ```
 
 ---
