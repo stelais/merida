@@ -2,7 +2,7 @@
 Type in the terminal:
 bokeh serve --show visualization_tool.py
 """
-from src.server_for_lightcurves import server_caller
+from merida.server_for_lightcurves import server_caller
 # ======================================================================================================
 #                                =~.oOo.~=  Example local data   =~.oOo.~=
 # ======================================================================================================
