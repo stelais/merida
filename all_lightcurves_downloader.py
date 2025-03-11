@@ -1,5 +1,5 @@
 from lightcurve_downloader import download_lightcurve
-from merida.lightcurves_cls import Metadata
+from src.lightcurves_cls import Metadata
 from tqdm import tqdm
 
 metadata = Metadata()

@@ -50,6 +50,7 @@ class LightCurvesNExSciURL:
         """
         self.lightcurve_dataframe.to_feather(path_to_save + self.lightcurve_name + '.feather')
 
+
 class LightCurvesNExSciLocalCSV:
     """
       A class for loading light curves downloaded from NExSci platform
@@ -110,7 +111,6 @@ class LightCurvesNExSciLocalFeather:
                 self.lightcurve_dataframe['cor_flux'], self.lightcurve_dataframe['flux_err'])
 
 
-
 class OldLightCurvesFuguLocal:
     """
       A class for loading light curves into the bokeh server the way it's saved in fugu
@@ -142,6 +142,38 @@ class OldLightCurvesFuguLocal:
                 np.full(shape=len(self.lightcurve_dataframe['HJD']), fill_value=np.nan),
                 self.lightcurve_dataframe['flux_err'])
 
+
+class SuperComputerLightCurves:
+    """
+      A class for loading light curves into the bokeh server the way it's saved in the supercomputer
+      you need name, class, and path
+      you can adjust other params like the extension if not phot.cor.feather
+    """
+
+    def __init__(self, lightcurve_name_, data_path_):
+        self.lightcurve_name = lightcurve_name_
+        self.field = lightcurve_name_.split('-')[0]
+        self.band = lightcurve_name_.split('-')[1]
+        self.chip = lightcurve_name_.split('-')[2]
+        self.subframe = lightcurve_name_.split('-')[3]
+        self.id = lightcurve_name_.split('-')[4]
+        self.main_data_path = data_path_
+        self.extension = '.feather'
+        self.lightcurve_path = (self.main_data_path + '/'
+                                + self.field + '/'
+                                + self.lightcurve_name + self.extension)
+        self.lightcurve_dataframe = pd.read_feather(self.lightcurve_path)
+
+    def get_days_fluxes_errors(self):
+        """
+        Get the days, fluxes, and fluxes errors from the lightcurve data frame
+        :return:
+        """
+        return (self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'],
+                np.full(shape=len(self.lightcurve_dataframe['HJD']), fill_value=np.nan),
+                self.lightcurve_dataframe['flux_err'])
+
+
 class Metadata:
     """
     A class for loading the light curves metadata (the two pieces)
@@ -170,7 +202,6 @@ class Metadata:
 
     def get_one_metadata_csv_file(self):
         self.dataframe.to_csv('data/metadata_test.csv', index=False)
-
 
 
 class MetadataLocal:
