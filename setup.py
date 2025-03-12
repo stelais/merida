@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='merida',
-      version='0.2',
+      version='0.2.1',
       description='MERIDA: MOA9yr Exploration and Research Interface for Dataset Analysis Resources',
       url='https://github.com/stelais/merida',
       author='Stela IS',
@@ -11,10 +11,10 @@ setup(name='merida',
                 'merida.analysis'],
       zip_safe=False,
       install_requires=["pyarrow==14.0.1",
-                        "bokeh==3.1.0",
+                        "bokeh==3.4.1",
                         "numpy==1.26.2",
                         "pandas==2.1.4",
-                        "tqdm==4.66.1",
-                        "requests==2.31.0",
+                        "tqdm==4.66.3",
+                        "requests==2.32.0",
                         "lxml==4.9.3",
                         "html5lib==1.1"])
