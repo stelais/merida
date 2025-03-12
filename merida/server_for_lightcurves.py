@@ -1,8 +1,8 @@
 from bokeh.layouts import column
 from bokeh.io import curdoc
 
-from src.zones_for_lightcurves import general_zones, three_highest_intervals_finder
-from src.lightcurves_cls import OldLightCurvesFuguLocal, LightCurvesNExSciLocalCSV, LightCurvesNExSciURL, \
+from merida.zones_for_lightcurves import general_zones, three_highest_intervals_finder
+from merida.lightcurves_cls import OldLightCurvesFuguLocal, LightCurvesNExSciLocalCSV, LightCurvesNExSciURL, \
     LightCurvesNExSciLocalFeather, SuperComputerLightCurves
 
 

@@ -1,13 +1,14 @@
 from setuptools import setup
 
 setup(name='merida',
-      version='0.1.1.1',
+      version='0.2',
       description='MERIDA: MOA9yr Exploration and Research Interface for Dataset Analysis Resources',
       url='https://github.com/stelais/merida',
       author='Stela IS',
       author_email='stela.ishitanisilva@nasa.gov',
       license='MIT',
-      packages=['merida'],
+      packages=['merida',
+                'merida.analysis'],
       zip_safe=False,
       install_requires=["pyarrow==14.0.1",
                         "bokeh==3.1.0",

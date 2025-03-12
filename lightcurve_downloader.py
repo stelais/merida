@@ -1,4 +1,4 @@
-from src.lightcurves_cls import LightCurvesNExSciURL
+from merida.lightcurves_cls import LightCurvesNExSciURL
 
 def download_lightcurve(lightcurve_name_, lightcurve_class_, path_to_save_='data/', lightcurve_extension_='.csv'):
     the_lightcurve = LightCurvesNExSciURL(lightcurve_name_=lightcurve_name_,
