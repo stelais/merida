@@ -34,20 +34,21 @@ class MOA9yearLightcurve:
         return (self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['flux'],
                 self.lightcurve_dataframe['cor_flux'], self.lightcurve_dataframe['flux_err'])
 
-    def get_days_magnitudes_errors(self, *, fudge_factor=1.0):
+    def get_days_magnitudes_errors(self, *, fudge_factor=1.0, offset_alternative=False):
         """
         Get the days, magnitudes, corrected magnitudes, magnitudes erros and corrected magnitudes errors
         from the lightcurve data frame
         :return:
         """
-        self.flux_to_mag(fudge_factor=fudge_factor)
+        self.flux_to_mag(fudge_factor=fudge_factor, offset_alternative=offset_alternative)
         return (self.lightcurve_dataframe['HJD'], self.lightcurve_dataframe['magnitudes'],
                 self.lightcurve_dataframe['cor_magnitudes'], self.lightcurve_dataframe['magnitudes_err'],
                 self.lightcurve_dataframe['cor_magnitudes_err'])
 
-    def flux_to_mag(self, *, fudge_factor=1.0):
+    def flux_to_mag(self, *, fudge_factor=1.0, offset_alternative=False):
         """
         The flux taking into account that flux cannot be negative AND taking in consideration the fudge factor!
+        :param offset_alternative:
         :param fudge_factor:
         :return:
         """
@@ -58,6 +59,13 @@ class MOA9yearLightcurve:
         self.lightcurve_dataframe['offset_cor_flux'] = self.lightcurve_dataframe['cor_flux'] + 1.1 * (-1) * np.min(
             self.lightcurve_dataframe['cor_flux'])
         self.lightcurve_dataframe['fudge_flux_err'] = self.lightcurve_dataframe['flux_err'] * fudge_factor
+
+        if offset_alternative:
+            self.lightcurve_dataframe['offset_flux'] = self.lightcurve_dataframe['flux'] + 1.0 * (-1) * np.min(
+                self.lightcurve_dataframe['flux']) + 1e-5
+            self.lightcurve_dataframe['offset_cor_flux'] = self.lightcurve_dataframe['cor_flux'] + 1.0 * (-1) * np.min(
+                self.lightcurve_dataframe['cor_flux']) + 1e-5
+            self.lightcurve_dataframe['fudge_flux_err'] = self.lightcurve_dataframe['flux_err'] * fudge_factor
 
         magnitudes, magnitudes_err = flux_to_magnitude_zero_point(self.lightcurve_dataframe['offset_flux'],
                                                                   self.lightcurve_dataframe['fudge_flux_err'],
