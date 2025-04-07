@@ -1,10 +1,10 @@
 from setuptools import setup
 
 setup(name='merida',
-      version='0.2.1.2',
+      version='0.2.1.3',
       description='MERIDA: MOA9yr Exploration and Research Interface for Dataset Analysis Resources',
       url='https://github.com/stelais/merida',
-      author='Stela IS',
+      author='Stela IS, Greg O, and MERIDA authors',
       author_email='stela.ishitanisilva@nasa.gov',
       license='MIT',
       packages=['merida',
