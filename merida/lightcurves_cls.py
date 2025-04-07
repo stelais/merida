@@ -1,5 +1,10 @@
+import re
+
 import pandas as pd
 import numpy as np
+import requests
+from bs4 import BeautifulSoup
+
 
 class LightCurvesNExSciURL:
     """
@@ -16,7 +21,7 @@ class LightCurvesNExSciURL:
         self.id = lightcurve_name_.split('-')[4]
         self.lightcurve_extended_name = self.field + '/' + self.band + '/' + self.chip + '/' + lightcurve_name_
         self.extension = '.ipac'
-        self.url_main_path = 'https://exoplanetarchive.ipac.caltech.edu/workspace/TMP_dk5Wxv_13874/MOA/tab1/data/'
+        self.url_main_path = self.get_workspace_url()
         self.lightcurve_url_path = self.url_main_path + self.lightcurve_extended_name + self.extension
         url = self.lightcurve_url_path
         print(url)
@@ -25,6 +30,23 @@ class LightCurvesNExSciURL:
                         'exptime', 'skydiff', 'chisq', 'npix', 'airmass1', 'ang1', 'included']
         self.lightcurve_dataframe = pd.read_csv(url, header=3, names=column_names, delimiter=r"\s+", index_col=False)
 
+    @staticmethod
+    def get_workspace_url() -> str:
+        """
+        Connects to the MOA archive site to get a workspace URL.
+        :return: The workspace URL.
+        """
+        url = 'https://exoplanetarchive.ipac.caltech.edu/cgi-bin/MOA/nph-firefly?MOA'
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/'
+                                 '537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'}
+        response = requests.get(url, headers=headers)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        body_tag = soup.body
+        onload_string = body_tag.attrs['onload']
+        workspace_pattern = r'TMP_\w+'
+        match = re.search(workspace_pattern, onload_string)
+        workspace_string = match.group()
+        return f'https://exoplanetarchive.ipac.caltech.edu/workspace/{workspace_string}/MOA/tab1/data/'
 
     def get_days_fluxes_errors(self):
         """
