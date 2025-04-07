@@ -1,5 +1,13 @@
+"""
+Code for matching star coordinates with MOA and OGLE alerts.
+[In the future] This code will be organized in modules, to be easy to give target coordinates
+and get back the alert names AND the equivalent lightcurve names.
+"""
 import pandas as pd
 import numpy as np
+
+# Tolerance for matching
+tolerance = 0.01
 
 general_path = '/Users/stela/Documents/Scripts/ai_microlensing/merida/data'
 
@@ -32,9 +40,6 @@ ogle_tables = [
     f"{ogle_path}/ogle4_2013_radec.csv",
     f"{ogle_path}/ogle4_2014_radec.csv"
 ]
-
-# Tolerance for matching
-tolerance = 0.01
 
 # Initialize columns to store matches
 selected_metadata['MOA_alerts'] = np.nan
@@ -72,7 +77,7 @@ for telescope, radec_tables in [('MOA', moa_tables), ('OGLE', ogle_tables)]:
 selected_metadata.replace("", np.nan, inplace=True)
 
 # Save the updated file
-updated_metadata_path = f"{general_path}/matched_selected_metadata.csv"
+updated_metadata_path = f"{general_path}/matched_selected_metadata_{tolerance}.csv"
 selected_metadata.to_csv(updated_metadata_path, index=False)
 
 print(f"Updated file saved as {updated_metadata_path}")
