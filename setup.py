@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='merida',
-      version='0.2.1.5',
+      version='0.2.1.6',
       description='MERIDA: MOA9yr Exploration and Research Interface for Dataset Analysis Resources',
       url='https://github.com/stelais/merida',
       author='Stela IS, Greg O, and MERIDA authors',
