@@ -20,13 +20,8 @@ class MOAReReducedLightcurve:
         self.lightcurve_dataframe['new_HJD'] = self.lightcurve_dataframe['HJD'] - 2450000.0
         self.master_file_path = master_file_path_
         if self.master_file_path is not None:
-            column_master_names = ['name_prefix',  'taka_lightcurve_name',
-                                   'RA', 'DEC',
-                                   'x_pixel', 'y_pixel',  # SIS: I'm not sure about these columns
-                                   'approximate_peak',
-                                   'priority_coefficient']
-            self.master_dataframe = pd.read_table(self.master_file_path, names=column_master_names,
-                                                header=None, delim_whitespace=True)
+            self.master_dataframe = reading_master_file(self.master_file_path)
+            self.master_row = self.master_dataframe[self.master_dataframe['name_prefix'] == self.name_prefix]
 
     def get_days_fluxes_errors(self):
         """
@@ -55,7 +50,7 @@ class MOAReReducedLightcurve:
             peak_day = input("Alternatively, type the day peak... (- 2450000.0) and press Enter")
         else:
             # Get the peak day from the master file
-            peak_day = self.master_dataframe['approximate_peak'][self.master_dataframe['name_prefix'] == self.name_prefix].values[0]
+            peak_day = self.master_row['approximate_peak'].values[0]
         plot, widget_inputs = plotter(self, height_and_width_=(325, 900), high_mag_plotting_=False,
                                       starting_and_ending_days_1_=None,
                                       starting_and_ending_days_2_=None, starting_and_ending_days_3_=None,
@@ -76,7 +71,7 @@ class MOAReReducedLightcurve:
             peak_day = input("Alternatively, type the day peak... (- 2450000.0) and press Enter")
         else:
             # Get the peak day from the master file
-            peak_day = self.master_dataframe['approximate_peak'][self.master_dataframe['name_prefix'] == self.name_prefix].values[0]
+            peak_day = self.master_row['approximate_peak'].values[0]
         plot, widget_inputs = plotter(self, height_and_width_=(325, 900), high_mag_plotting_=False,
                                       starting_and_ending_days_1_=None,
                                       starting_and_ending_days_2_=None, starting_and_ending_days_3_=None,
@@ -87,6 +82,22 @@ class MOAReReducedLightcurve:
         plot.y_range.flipped = True
         output_file(f"{output_folder_}{self.lightcurve_name}_mag.html")
         save(plot)
+
+
+def reading_master_file(master_file_path):
+    """
+    Read the master file and return a dataframe
+    :param master_file_path:
+    :return:
+    """
+    column_master_names = ['name_prefix',  'taka_lightcurve_name',
+                                   'RA', 'DEC',
+                                   'x_pixel', 'y_pixel',  # SIS: I'm not sure about these columns
+                                   'approximate_peak',
+                                   'priority_coefficient']
+    master_dataframe = pd.read_table(master_file_path, names=column_master_names,
+                                     header=None, delim_whitespace=True)
+    return master_dataframe
 
 
 if __name__ == '__main__':
