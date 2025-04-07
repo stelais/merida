@@ -3,11 +3,13 @@ from merida.zones_for_lightcurves import plotter
 from bokeh.io import save, output_file
 from bokeh.models import Range1d
 
+
 class MOAReReducedLightcurve:
     """
       A class for loading/reading "si" light curves downloaded from Ian's personal page
       you need number, and path to the folder hosting the lightcurve
     """
+
     def __init__(self, lightcurve_number_, data_folder_, master_file_path_=None):
         self.lightcurve_number_ = lightcurve_number_
         self.name_prefix = f'si{lightcurve_number_:02}'
@@ -31,7 +33,7 @@ class MOAReReducedLightcurve:
         return (self.lightcurve_dataframe['new_HJD'], self.lightcurve_dataframe['flux'],
                 self.lightcurve_dataframe['flux_err'])
 
-    def get_days_magnitudes_errors(self, *, fudge_factor=1.0, offset_alternative=False):
+    def get_days_magnitudes_errors(self):
         """
         Get the days, magnitudes and magnitudes errors from the lightcurve data frame
         :return:
@@ -90,11 +92,11 @@ def reading_master_file(master_file_path):
     :param master_file_path:
     :return:
     """
-    column_master_names = ['name_prefix',  'taka_lightcurve_name',
-                                   'RA', 'DEC',
-                                   'x_pixel', 'y_pixel',  # SIS: I'm not sure about these columns
-                                   'approximate_peak',
-                                   'priority_coefficient']
+    column_master_names = ['name_prefix', 'taka_lightcurve_name',
+                           'RA', 'DEC',
+                           'x_pixel', 'y_pixel',  # SIS: I'm not sure about these columns
+                           'approximate_peak',
+                           'priority_coefficient']
     master_dataframe = pd.read_table(master_file_path, names=column_master_names,
                                      header=None, delim_whitespace=True)
     return master_dataframe
@@ -109,7 +111,7 @@ if __name__ == '__main__':
         data_folder = '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/lightcurves_from_ian/'
         lightcurve = MOAReReducedLightcurve(lightcurve_number, data_folder,
                                             '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/'
-                                            'lightcurves_from_ian/stela_list.txt') # path to the master file
+                                            'lightcurves_from_ian/stela_list.txt')  # path to the master file
         days, fluxes, flux_errors = lightcurve.get_days_fluxes_errors()
         print(days, fluxes, flux_errors)
         days, magnitudes, magnitudes_errors = lightcurve.get_days_magnitudes_errors()
