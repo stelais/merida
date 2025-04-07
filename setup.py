@@ -17,4 +17,5 @@ setup(name='merida',
                         "tqdm==4.66.3",
                         "requests==2.32.0",
                         "lxml==4.9.3",
-                        "html5lib==1.1"])
+                        "html5lib==1.1",
+                        "beautifulsoup4==4.13.3",])
