@@ -8,7 +8,7 @@ from bokeh.plotting import figure
 
 
 def plotter(the_lightcurve_, height_and_width_=(325, 900), high_mag_plotting_=False, starting_and_ending_days_1_=None,
-            starting_and_ending_days_2_=None, starting_and_ending_days_3_=None):
+            starting_and_ending_days_2_=None, starting_and_ending_days_3_=None, if_cor_flux=True, if_mag=False):
     """
     The main plotter function with a few call backs (change title, change circle size, change circle alpha)
     :param the_lightcurve_: the lightcurve object, loaded with LightCurves class
@@ -19,8 +19,16 @@ def plotter(the_lightcurve_, height_and_width_=(325, 900), high_mag_plotting_=Fa
     :param starting_and_ending_days_3_: the starting and ending days of the third type of high magnification interval
     :return:
     """
-    days, fluxes, cor_fluxes, fluxes_errors = the_lightcurve_.get_days_fluxes_errors()
+    if if_cor_flux == False:
+        days, fluxes, fluxes_errors = the_lightcurve_.get_days_fluxes_errors()
+    else:
+        days, fluxes, cor_fluxes, fluxes_errors = the_lightcurve_.get_days_fluxes_errors()
     source = ColumnDataSource(data=dict(x=days, y=fluxes))
+    if if_mag == True:
+        days, magnitudes, magnitudes_errors = the_lightcurve_.get_days_magnitudes_errors()
+        source = ColumnDataSource(data=dict(x=days, y=magnitudes))
+
+        # fluxes = [x - min(fluxes) for x in fluxes]
     # Set up plot
     height_, width_ = height_and_width_
 
