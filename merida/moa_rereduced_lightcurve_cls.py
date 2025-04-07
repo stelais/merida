@@ -10,8 +10,8 @@ class MOAReReducedLightcurve:
     """
     def __init__(self, lightcurve_number_, data_folder_, master_file_path_=None):
         self.lightcurve_number_ = lightcurve_number_
-        self.name_suffix = f'si{lightcurve_number_:02}'
-        self.lightcurve_name = f'{self.name_suffix}-MOA2R-10000.phot.dat'
+        self.name_prefix = f'si{lightcurve_number_:02}'
+        self.lightcurve_name = f'{self.name_prefix}-MOA2R-10000.phot.dat'
         self.lightcurve_path = data_folder_ + self.lightcurve_name
         column_names = ['HJD', 'flux', 'flux_err', 'observation_id', 'magnitude', 'magnitude_err',
                         'fwhm', 'background', 'photometric_scale', 'JD']
@@ -20,7 +20,7 @@ class MOAReReducedLightcurve:
         self.lightcurve_dataframe['new_HJD'] = self.lightcurve_dataframe['HJD'] - 2450000.0
         self.master_file_path = master_file_path_
         if self.master_file_path is not None:
-            column_master_names = ['name_suffix',  'taka_lightcurve_name',
+            column_master_names = ['name_prefix',  'taka_lightcurve_name',
                                    'RA', 'DEC',
                                    'x_pixel', 'y_pixel',  # SIS: I'm not sure about these columns
                                    'approximate_peak',
@@ -55,7 +55,7 @@ class MOAReReducedLightcurve:
             peak_day = input("Alternatively, type the day peak... (- 2450000.0) and press Enter")
         else:
             # Get the peak day from the master file
-            peak_day = self.master_dataframe['approximate_peak'][self.master_dataframe['name_suffix'] == self.name_suffix].values[0]
+            peak_day = self.master_dataframe['approximate_peak'][self.master_dataframe['name_prefix'] == self.name_prefix].values[0]
         plot, widget_inputs = plotter(self, height_and_width_=(325, 900), high_mag_plotting_=False,
                                       starting_and_ending_days_1_=None,
                                       starting_and_ending_days_2_=None, starting_and_ending_days_3_=None,
@@ -76,7 +76,7 @@ class MOAReReducedLightcurve:
             peak_day = input("Alternatively, type the day peak... (- 2450000.0) and press Enter")
         else:
             # Get the peak day from the master file
-            peak_day = self.master_dataframe['approximate_peak'][self.master_dataframe['name_suffix'] == self.name_suffix].values[0]
+            peak_day = self.master_dataframe['approximate_peak'][self.master_dataframe['name_prefix'] == self.name_prefix].values[0]
         plot, widget_inputs = plotter(self, height_and_width_=(325, 900), high_mag_plotting_=False,
                                       starting_and_ending_days_1_=None,
                                       starting_and_ending_days_2_=None, starting_and_ending_days_3_=None,
