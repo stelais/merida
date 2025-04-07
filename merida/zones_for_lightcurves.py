@@ -40,7 +40,7 @@ def plotter(the_lightcurve_, height_and_width_=(325, 900), high_mag_plotting_=Fa
         plot = plotter_highlights(plot, starting_and_ending_days_2_, color=2.0)
         plot = plotter_highlights(plot, starting_and_ending_days_3_, color=3.0)
 
-    plot_controller = plot.circle('x', 'y', source=source, fill_alpha=0.7, size=5, legend_label='MOA-Red',
+    plot_controller = plot.scatter('x', 'y', source=source, fill_alpha=0.7, size=5, legend_label='MOA-Red',
                                   color='brown')
     # plot.line('x', 'y', source=source, line_width=3, line_alpha=0.6)
 
@@ -100,7 +100,7 @@ def plotter_with_errorbars(the_lightcurve_, main_plot_, high_mag_plotting_=False
         plot = plotter_highlights(plot, starting_and_ending_days_2_, color=2.0)
         plot = plotter_highlights(plot, starting_and_ending_days_3_, color=3.0)
 
-    plot_controller = plot.circle('x', 'y', source=source, fill_alpha=0.7, size=5, legend_label='MOA-Red',
+    plot_controller = plot.scatter('x', 'y', source=source, fill_alpha=0.7, size=5, legend_label='MOA-Red',
                                   color='brown')
 
     whisker_errorbar = Whisker(source=source, base="x", upper="upper", lower="lower",
