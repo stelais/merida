@@ -57,8 +57,11 @@ class MOAReReducedLightcurve:
         """
         # [1.1 x  (-1) x smallest_negative_flux_value]
         # self.lightcurve_dataframe['offset_fluxes'] = self.lightcurve_dataframe['fluxes'] - np.min(self.lightcurve_dataframe['fluxes'])
-        self.lightcurve_dataframe['offset_flux'] = self.lightcurve_dataframe['flux'] + 1.1 * (-1) * np.min(
+        if np.min(self.lightcurve_dataframe['flux']) < 0:
+            self.lightcurve_dataframe['offset_flux'] = self.lightcurve_dataframe['flux'] + 1.1 * (-1) * np.min(
             self.lightcurve_dataframe['flux'])
+        else:
+            self.lightcurve_dataframe['offset_flux'] = self.lightcurve_dataframe['flux']
         self.lightcurve_dataframe['fudge_flux_err'] = self.lightcurve_dataframe['flux_err'] * fudge_factor
 
         if offset_alternative:
