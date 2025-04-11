@@ -36,3 +36,6 @@ path = "src/merida/__about__.py"
 
 [[tool.hatch.envs.all.matrix]]
 python = ["3.9", "3.10", "3.11", "3.12"]
+
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
