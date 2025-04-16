@@ -3,12 +3,26 @@ Type in the terminal:
 bokeh serve --show visualization_tool.py
 """
 from merida.server_for_lightcurves import server_caller
+
+# ======================================================================================================
+#                                 =~.oOo.~=  Example URL data   =~.oOo.~=
+# ======================================================================================================
+# This file contains the parameters for the visualization tool
+lightcurve_name = 'gb1-R-1-1-315'
+lightcurve_class ='positive'
+data_local = False # If you are using URL, set this to False
+data_path = None
+
+server_caller(lightcurve_name, lightcurve_class, data_local, data_path)
+
+
+
 # ======================================================================================================
 #                                =~.oOo.~=  Example local data   =~.oOo.~=
 # ======================================================================================================
 # This file contains the parameters for the visualization tool
 # lightcurve_name = 'gb10-R-6-0-192695'
-lightcurve_name = 'gb9-R-8-5-27219'
+# lightcurve_name = 'gb9-R-8-5-27219'
 # lightcurve_name = 'gb13-R-9-3-489'
 # lightcurve_name = 'gb14-R-8-0-44172'
 # lightcurve_name = 'gb9-R-8-7-155979'
@@ -99,7 +113,7 @@ lightcurve_name = 'gb9-R-8-5-27219'
 # lightcurve_name = 'gb20-R-7-4-51897'
 # lightcurve_name = 'gb14-R-3-6-90793'
 # lightcurve_name = 'gb14-R-4-4-147964'
-# lightcurve_name = 'gb13-R-8-0-53147'
+lightcurve_name = 'gb13-R-8-0-53147'
 # lightcurve_name = 'gb10-R-8-5-70149'
 # lightcurve_name = 'gb5-R-8-7-565'
 # lightcurve_name = 'gb15-R-2-1-103351'
@@ -175,23 +189,23 @@ lightcurve_name = 'gb9-R-8-5-27219'
 # lightcurve_name = 'gb9-R-8-5-27219'
 
 
-lightcurve_class = 'negative'
-data_local = True
-# internal:
-general_path = '/Users/stela/Documents/Scripts/ai_microlensing/qusi_microlensing/data/microlensing_2M'
-field_path = f'{lightcurve_name.split("-")[0]}'
-# lightcurve_path = f'{general_path}/{field_path}/{lightcurve_name}.feather'
+# Planetaries with no correction flux
+# lightcurve_name = 'gb21-R-5-6-43515'
+# lightcurve_name = 'gb13-R-9-3-489'
+# lightcurve_name = 'gb14-R-6-2-55435'
 
+# lightcurve_name = 'gb15-R-9-1-66362'
+# lightcurve_name = 'gb13-R-3-0-11045'
+# lightcurve_name = 'gb5-R-9-7-1046804'
+# lightcurve_name = 'gb12-R-4-1-90951'
 
-server_caller(lightcurve_name, lightcurve_class, data_local, general_path, supercomputer_=True)
-
-# ======================================================================================================
-#                                 =~.oOo.~=  Example URL data   =~.oOo.~=
-# ======================================================================================================
-# This file contains the parameters for the visualization tool
-# lightcurve_name = 'gb1-R-1-1-315'
-# lightcurve_class ='positive'
-# data_local = False # If you are using URL, set this to False
-# data_path = None
+# lightcurve_class = 'negative'
+# data_local = True
+# # internal:
+# general_path = '/Users/stela/Documents/Scripts/ai_microlensing/qusi_microlensing/data/microlensing_2M'
+# field_path = f'{lightcurve_name.split("-")[0]}'
+# # lightcurve_path = f'{general_path}/{field_path}/{lightcurve_name}.feather'
 #
-# server_caller(lightcurve_name, lightcurve_class, data_local, data_path)
+#
+# server_caller(lightcurve_name, lightcurve_class, data_local, general_path, supercomputer_=True)
+
