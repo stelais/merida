@@ -106,8 +106,6 @@ class MOA_Lightcurve_Metadata:
         self.alert_id2 = self.metadata['alert_id2'].values[0]
         self.alert_x2 = self.metadata['alert_x2'].values[0]
         self.alert_y2 = self.metadata['alert_y2'].values[0]
-        self.ROW_IDX = self.metadata['ROW_IDX'].values[0]
-        self.ROW_NUM = self.metadata['ROW_NUM'].values[0]
         self.lightcurve_name = self.metadata['lightcurve_name'].values[0]
 
 

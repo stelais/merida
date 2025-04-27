@@ -1,5 +1,9 @@
 import re
+import shutil
+import urllib.request
+from pathlib import Path
 
+import astropy.io.ascii
 import pandas as pd
 import numpy as np
 import requests
@@ -215,15 +219,47 @@ class Metadata:
     'lightcurve_name']
     """
 
-    def __init__(self):
-        self.path1 = 'data/metadata_1of2.feather'
-        self.path2 = 'data/metadata_2of2.feather'
-        self.dataframe1 = pd.read_feather(self.path1)
-        self.dataframe2 = pd.read_feather(self.path2)
-        self.dataframe = pd.concat([self.dataframe1, self.dataframe2], ignore_index=True)
+    def __init__(self, path_to_metadata: Path = Path('data/metadata.feather')):
+        if not path_to_metadata.exists():
+            print(f'Metadata not found at `{path_to_metadata}`. Downloading and converting...')
+            self.download_metadata(path_to_metadata)
+            print(f'Metadata download and conversion complete.')
+        self.dataframe = pd.read_feather(path_to_metadata)
 
     def get_one_metadata_csv_file(self):
         self.dataframe.to_csv('data/metadata_test.csv', index=False)
+
+    @staticmethod
+    def download_metadata(path_to_metadata: Path = Path('data/metadata.feather')) -> None:
+        """
+        Downloads the metadata for the MOA 9-year dataset.
+
+        :param path_to_metadata: The path to the metadata.
+        """
+        metadata_url = 'https://exoplanetarchive.ipac.caltech.edu/data/Contributed/MOA/bulk/metadata.ipac.tar.gz'
+        data_directory = path_to_metadata.parent
+        data_directory.mkdir(parents=True, exist_ok=True)
+        gz_path = data_directory.joinpath('metadata.ipac.tar.gz')
+        ipac_path = data_directory.joinpath('metadata.ipac')
+        if gz_path.exists():
+            gz_path.unlink()
+        if ipac_path.exists():
+            ipac_path.unlink()
+        if path_to_metadata.exists():
+            path_to_metadata.unlink()
+        with urllib.request.urlopen(metadata_url) as response, gz_path.open('wb') as gz_file:
+            shutil.copyfileobj(response, gz_file)
+        shutil.unpack_archive(gz_path, data_directory)
+        astropy_table = astropy.io.ascii.read(ipac_path)
+        data_frame = astropy_table.to_pandas()
+
+        def metadata_row_to_light_curve_name(metadata_row: pd.Series) -> str:
+            return f'gb{metadata_row["field"]}-R-{metadata_row["chip"]}-{metadata_row["subframe"]}-{metadata_row["id"]}'
+
+        data_frame['lightcurve_name'] = data_frame.apply(metadata_row_to_light_curve_name, axis=1)
+        data_frame.to_feather(path_to_metadata)
+        gz_path.unlink()
+        ipac_path.unlink()
 
 
 class MetadataLocal:
