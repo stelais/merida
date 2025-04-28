@@ -21,7 +21,7 @@ class MOAReReducedLightcurve:
         else:
             self.the_name_prefix = self.name_prefix
         self.lightcurve_name = f'{self.the_name_prefix}-MOA2R-10000.phot.dat'
-        self.lightcurve_path = data_folder_ + self.lightcurve_name
+        self.lightcurve_path = data_folder_ + '/' + self.lightcurve_name
         column_names = ['HJD', 'flux', 'flux_err', 'observation_id', 'magnitude', 'magnitude_err',
                         'fwhm', 'background', 'photometric_scale', 'JD']
         self.lightcurve_dataframe = pd.read_table(self.lightcurve_path,
