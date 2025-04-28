@@ -312,5 +312,6 @@ hs_err_pid*
 # SIS addon
 data/lightcurves_from_ian/
 data/gb*/
+data/metadata_versions/
 RTModel_plots/
 RTModel_runs/
