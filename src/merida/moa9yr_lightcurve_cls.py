@@ -4,7 +4,7 @@ import numpy as np
 
 class MOA9yearLightcurve:
     """
-      A class for loading light curves downloaded from NExSci platform
+      A class for using the light curves downloaded from NExSci platform . You can easily get flux and magnitude
       you need name, and path to the lightcurve
       you can adjust other params like the extension if not phot.cor.feather
     """
