@@ -13,10 +13,14 @@ class MOAReReducedLightcurve:
       you need number, and path to the folder hosting the lightcurve
     """
 
-    def __init__(self, lightcurve_number_, data_folder_, master_file_path_=None):
+    def __init__(self, lightcurve_number_, data_folder_, master_file_path_=None, alternative_lightcurve_version=None):
         self.lightcurve_number_ = lightcurve_number_
         self.name_prefix = f'si{lightcurve_number_:02}'
-        self.lightcurve_name = f'{self.name_prefix}-MOA2R-10000.phot.dat'
+        if alternative_lightcurve_version is not None:
+            self.the_name_prefix = self.name_prefix + alternative_lightcurve_version
+        else:
+            self.the_name_prefix = self.name_prefix
+        self.lightcurve_name = f'{self.the_name_prefix}-MOA2R-10000.phot.dat'
         self.lightcurve_path = data_folder_ + self.lightcurve_name
         column_names = ['HJD', 'flux', 'flux_err', 'observation_id', 'magnitude', 'magnitude_err',
                         'fwhm', 'background', 'photometric_scale', 'JD']
@@ -157,3 +161,11 @@ if __name__ == '__main__':
         output_folder = '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/lightcurves_from_ian/plots/'
         lightcurve.quick_flux_plot(output_folder)
         lightcurve.quick_magnitude_plot(output_folder)
+
+    lightcurve = MOAReReducedLightcurve(12, data_folder,
+                                        master_file, alternative_lightcurve_version='a')
+    days, fluxes, flux_errors = lightcurve.get_days_fluxes_errors()
+    days, magnitudes, magnitudes_errors = lightcurve.get_days_magnitudes_errors()
+
+    lightcurve.quick_flux_plot(output_folder)
+    lightcurve.quick_magnitude_plot(output_folder)
