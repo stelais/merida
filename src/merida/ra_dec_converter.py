@@ -40,7 +40,7 @@ if __name__ == '__main__':
     #     df.to_csv(new_name, index=False)
     #     print(f'{new_name} saved.')
 
-    moa_alerts_path = '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/moa_alerts'
+    moa_alerts_path = '/data/alerts/moa_alerts'
     moa_tables = [f'{moa_alerts_path}/moa2_2006.csv',
                   f'{moa_alerts_path}/moa2_2007.csv',
                   f'{moa_alerts_path}/moa2_2008.csv',
