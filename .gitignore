@@ -307,3 +307,6 @@ hs_err_pid*
 # Project specific
 
 /.idea/
+/data/metadata.ipac
+/data/metadata.ipac.tar.gz
+/data/metadata.feather

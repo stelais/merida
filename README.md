@@ -34,17 +34,10 @@ python lightcurve_downloader.py
 ```
 ---
 ### To locally download ALL MOA9yr lightcurves from the NExSci archive [can be improved]:
-* This will take ~ 55 days... For now, I recommend breaking this function in 15 pieces and run parallel, e.g. piece #2:
-  ``` 
-  metadata = Metadata()
-  n = 2
-  df_total = metadata.dataframe
-  df_temp = df_total[df_total['ROW_NUM'] > (n-1)*160604]
-  df = df_temp[df_temp['ROW_NUM'] <= n*160604]
-  ```
 * In `all_lightcurves_downloader.py`:
   * You can change the path by changing the variable `path_to_save_ ='[the_path_you_want_]/'`
-  * You can also change the extension `lightcurve_extension_='.[extension]'`. Only `feather` and `CSV` supported for now. 
+  * You can also change the extension `lightcurve_extension_='.[extension]'`. Only `feather` and `CSV` supported for now.
+  * Single threaded, this will take ~55 days. The script parallelizes this across 15 processes, and this is adjustable. 
 
 After done that, you just have to run the following command in the terminal:
 ```
