@@ -313,5 +313,9 @@ hs_err_pid*
 data/lightcurves_from_ian/
 data/gb*/
 data/metadata_versions/
+data/alerts_og/
 RTModel_plots/
 RTModel_runs/
+quick_tasks/
+src/merida/drafts/
+
