@@ -145,20 +145,25 @@ def reading_master_file(master_file_path):
 
 if __name__ == '__main__':
     # Example usage of the MOAReReducedLightcurve class:
-    for lightcurve_number in range(1, 10):
-        if lightcurve_number == 4 or lightcurve_number == 8:
+
+    # path of the folder with the Ian's lightcurves
+    data_folder = '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/lightcurves_from_ian/'
+    # path of the folder with master file
+    master_file = '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/lightcurves_from_ian/stela_list.txt'
+    # Path of the folder where you want to save the plots
+    output_folder = '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/lightcurves_from_ian/plots/'
+
+    for lightcurve_number in range(1, 32):
+        if lightcurve_number == 4 or lightcurve_number == 8 or lightcurve_number == 10:
             continue
-        # path of the folder with the Ian's lightcurves
-        data_folder = '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/lightcurves_from_ian/'
+        print('Lightcurve number:', lightcurve_number)
         lightcurve = MOAReReducedLightcurve(lightcurve_number, data_folder,
-                                            '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/'
-                                            'lightcurves_from_ian/stela_list.txt')  # path to the master file
+                                            master_file)
         days, fluxes, flux_errors = lightcurve.get_days_fluxes_errors()
-        print(days, fluxes, flux_errors)
+        # print(days, fluxes, flux_errors)
         days, magnitudes, magnitudes_errors = lightcurve.get_days_magnitudes_errors()
-        print(days, magnitudes, magnitudes_errors)
-        # Path of the folder where you want to save the plots
-        output_folder = '/Users/stela/Documents/Scripts/ai_microlensing/merida/data/lightcurves_from_ian/plots/'
+        # print(days, magnitudes, magnitudes_errors)
+
         lightcurve.quick_flux_plot(output_folder)
         lightcurve.quick_magnitude_plot(output_folder)
 
