@@ -316,6 +316,7 @@ data/metadata_versions/
 data/alerts_og/
 RTModel_plots/
 RTModel_runs/
+run_rtmodel_codes
 quick_tasks/
 src/merida/drafts/
 
